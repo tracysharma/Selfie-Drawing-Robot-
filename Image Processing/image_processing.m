@@ -23,9 +23,9 @@ boundary = 18;    %we can change to a different value but this works fine
 
 ZOffset = 113.215;  %we can enter the offset value for z here, if enter -100 then all z value will be 100 less
 
-Yaw = -176.629;  %W value, for robot arm to hold the pen
-Roll = -2.447;   %P value 
-Pitch = 112.57;  %R value
+% Yaw = -176.629;  %W value, for robot arm to hold the pen
+% Roll = -2.447;   %P value 
+% Pitch = 112.57;  %R value
 
 %% Acquire an image from user selection
 
@@ -181,22 +181,21 @@ for xx = 1:numel(NewStrokeRows)    %n = numel( A ) returns the number of element
 end
 
 
-%% For yaw (w) roll (P) and pitch (R)
-%optional
-
-WPRMatrix(1:XYZmatrixRowSize,1) = Yaw;   %make a number of rows same as XYZmatrix and first column equals yaw
-WPRMatrix(1:XYZmatrixRowSize,2) = Roll;  %second column equals pitch
-WPRMatrix(1:XYZmatrixRowSize,3) = Pitch;  %third column equals Pitch
-
-XYZWPRMatrix = [XYZmatrix WPRMatrix];  %combine x,y,z and yaw pitch and roll to one sum matrix
+% %% For yaw (w) roll (P) and pitch (R)
+% %optional
+% 
+% WPRMatrix(1:XYZmatrixRowSize,1) = Yaw;   %make a number of rows same as XYZmatrix and first column equals yaw
+% WPRMatrix(1:XYZmatrixRowSize,2) = Roll;  %second column equals pitch
+% WPRMatrix(1:XYZmatrixRowSize,3) = Pitch;  %third column equals Pitch
+% 
+% XYZWPRMatrix = [XYZmatrix WPRMatrix];  %combine x,y,z and yaw pitch and roll to one sum matrix
 %% output to csv file
 
-writematrix(XYZWPRMatrix,'test.csv');     %write matrix to test.csv file 
-                                          %alternatively, writematrix(XYZMatrix,'test.csv'); 
-                                          %we can also create a 'test.txt' file instead
-  
+% writematrix(XYZWPRMatrix,'test.csv');     %write matrix to test.csv file 
+ 
+writematrix(XYZmatrix, 'test.csv');
 
-%Most codes written by Kevin Li (CC BY-SA 2.0)
+%Iinspired by Kevin Li (CC BY-SA 2.0)
 
 
 
