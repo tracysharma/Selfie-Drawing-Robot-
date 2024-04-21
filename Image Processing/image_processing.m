@@ -10,7 +10,7 @@ close all;
 clc; 
 rng('default');
 
-ScaleValue = 300;  %scale value for x and y, default scale of 1 have x and y value around 0.3
+ScaleValue = 300;  %scale value for x and y, default scale of 1 have    x and y value around 0.3
 LiftPenHeight = 10;  %set value for z which is the hight we lift pen (in mm)
 
 DistanceWhichLiftPen = 0.002 * ScaleValue;   %suggested ti not change this value (if want changed, change only 0.002)
@@ -33,7 +33,7 @@ ZOffset = 113.215;  %we can enter the offset value for z here, if enter -100 the
 I = imread(uigetfile);   %the image need to be in the same folder as this MATLAB program
                          %change to ALL FILES, then can then you can see images and select
 
-%I = imread('image.png');  %alternatively use specific image 
+% I = imread('hard5.png');  %alternatively use specific image 
 
 
 %% Read an image file 
