@@ -27,6 +27,34 @@ ZOffset = 113.215;  %we can enter the offset value for z here, if enter -100 the
 % Roll = -2.447;   %P value 
 % Pitch = 112.57;  %R value
 
+%% Read in ROS image and save in folder
+% Create a ROS master node
+rosinit;
+
+% Subscribe to the USB camera topic
+usbCamSub = rossubscriber('/usb_cam/image_raw');
+
+% Create a loop to continuously read images from the USB camera
+while true
+    % Receive the image message
+    imgMsg = receive(usbCamSub);
+    
+    % Convert the ROS image message to MATLAB format
+    img = readImage(imgMsg);
+    
+    % Display the image
+    imshow(img);
+    
+    % Check if the user has pressed the Enter key
+    if waitforbuttonpress == 1 && strcmp(get(gcf, 'CurrentKey'), 'return')
+        % Save the image as a PNG file
+        imwrite(img, 'captured_image.png');
+        disp('Image saved as captured_image.png');
+    end
+end
+
+
+
 %% Acquire an image from user selection
 
 
