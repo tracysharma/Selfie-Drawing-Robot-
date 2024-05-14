@@ -58,7 +58,7 @@ end
 %% Acquire an image from user selection
 
 
-I = imread(uigetfile('*.*', 'Select an Image'));  % Allow selection of any file type and immediately read the image   %the image need to be in the same folder as this MATLAB program
+I = imread(uigetfile);   %the image need to be in the same folder as this MATLAB program
                          %change to ALL FILES, then can then you can see images and select
 
 % I = imread('captured_image.png');  %alternatively use specific image 
@@ -79,18 +79,27 @@ BW = edge(rgb2gray(I),'Canny',[0.0813 0.1281]); %0.0813,0.1281
                                                   %the Canny method is less likely than the other methods to be fooled by noise, and more likely to detect true weak edges.
 
 figure, imshow(BW);
-%% Skeletonization/Segmentation
 
-BWseg = bwmorph(BW,'skel',Inf); %applies a specific morphological operation to the binary image BW.
-                                %Inf makes the operation repeat until the image no longer changes.
-                                %With n = Inf, remove pixels on the boundaries of objects without allowing objects to break apart. 
-                                % The pixels remaining make up the image skeleton. This option preserves the Euler number.
-                                %Morphological operations are image processing techniques that deal with the shape or structure of objects in an image. 
-                                %They work mainly with binary images, where pixels are either black (0) or white (1).
-figure, imshow(BWseg);
+% Check if the image is indexed (using a colormap)
+if isindexed(I)
+    [I, map] = imread(uigetfile); % Re-read the image if needed to get the colormap
+    I = ind2rgb(I, map); % Convert indexed image to RGB using its colormap
+end
 
+% Ensure the image is RGB or grayscale, then convert to grayscale
+if ndims(I) == 3  % Check if the image is RGB
+    grayI = rgb2gray(I);
+else
+    grayI = I; % It's already grayscale
+end
+
+% Perform Canny edge detection
+BW = edge(grayI, 'Canny', [0.0813 0.1281]);
+
+% Display the result
+figure, imshow(BW);
 %% Nearest Neighbor Vectorization
-vectors = nearestNeighborVectorization(BWseg);
+vectors = nearestNeighborVectorization(BW);
 
 % Optionally, you can visualize the vectorized result
 figure;
@@ -104,6 +113,16 @@ for i = 1:size(vectors, 1)
     end
 end
 hold off;
+%% Skeletonization/Segmentation
+
+BWseg = bwmorph(BW,'skel',Inf); %applies a specific morphological operation to the binary image BW.
+                                %Inf makes the operation repeat until the image no longer changes.
+                                %With n = Inf, remove pixels on the boundaries of objects without allowing objects to break apart. 
+                                % The pixels remaining make up the image skeleton. This option preserves the Euler number.
+                                %Morphological operations are image processing techniques that deal with the shape or structure of objects in an image. 
+                                %They work mainly with binary images, where pixels are either black (0) or white (1).
+figure, imshow(BWseg);
+
 
 %% Detect start and end points 
 
