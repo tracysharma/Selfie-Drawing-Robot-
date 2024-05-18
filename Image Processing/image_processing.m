@@ -96,18 +96,18 @@ vectors = nearestNeighborVectorization(BWseg);
 filename = 'vectors.csv';
 writematrix(vectors, filename, 'Delimiter', ',');
 
-% Optionally, you can visualize the vectorized result
-figure;
-imshow(I);  % Show original image
-hold on;
-for i = 1:size(vectors, 1)
-    if vectors(i,1) == vectors(i,3)  % Horizontal line
-        plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'r', 'LineWidth', 2);
-    else  % Vertical line
-        plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'b', 'LineWidth', 2);
-    end
-end
-hold off;
+% % Optionally, you can visualize the vectorized result
+% figure;
+% imshow(I);  % Show original image
+% hold on;
+% for i = 1:size(vectors, 1)
+%     if vectors(i,1) == vectors(i,3)  % Horizontal line
+%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'r', 'LineWidth', 2);
+%     else  % Vertical line
+%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'b', 'LineWidth', 2);
+%     end
+% end
+% hold off;
 
 %% Visualize Vectors from CSV
 % Read vectors from CSV
