@@ -42,7 +42,7 @@ while true
     
     % Convert the ROS image message to MATLAB format
     img = readImage(imgMsg);
-
+    
     % Display the image
     if isempty(img)
         display('No image data received')
@@ -56,7 +56,6 @@ while true
         % Save the image as a PNG file
         imwrite(img, 'captured_image.png');
         disp('Image saved as captured_image.png');
-        break;
     end
 end
 
