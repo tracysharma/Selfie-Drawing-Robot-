@@ -136,6 +136,45 @@ for i = 1:size(vectors, 1)
 end
 hold off;
 
+%% % Assume 'vectors' is the output from the nearest neighbor vectorization
+% vectors = [y1, x1, y2, x2]; this is typical format after vectorization
+
+% Optionally convert this to a simple list of unique points if needed
+% This might involve reshaping the array and then using unique to filter duplicates
+points = reshape(vectors.', 2, []).';  % Reshape and transpose to get all points in rows
+unique_points = unique(points, 'rows');  % Optional: remove duplicate points
+
+% Export to CSV
+filename = 'xypoints_after_vect.csv';
+writematrix(unique_points, filename);
+
+%% % Load the points from CSV
+points = readmatrix('xypoints_after_vect.csv');
+
+% Plotting the points
+figure;
+plot(points(:,1), points(:,2), 'o'); % Plot points as circles
+title('Visual Representation of Points');
+xlabel('X Coordinate');
+ylabel('Y Coordinate');
+axis equal; % Ensure equal scaling on both axes
+grid on; % Turn on the grid for easier visualization
+
+%% Uniform Downsampling
+% Load the original points
+points = readmatrix('xypoints_after_vect.csv');
+
+% Downsample the points by selecting every 10th point
+downsampled_points = points(1:10:end, :);
+
+% Plotting the downsampled points
+figure;
+plot(downsampled_points(:,1), downsampled_points(:,2), 'o');
+title('Visual Representation of Downsampled Points');
+xlabel('X Coordinate');
+ylabel('Y Coordinate');
+axis equal;
+grid on;
 
 % %% Detect start and end points 
 % 

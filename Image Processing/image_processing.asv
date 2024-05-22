@@ -42,7 +42,7 @@ while true
     
     % Convert the ROS image message to MATLAB format
     img = readImage(imgMsg);
-    
+
     % Display the image
     if isempty(img)
         display('No image data received')
@@ -56,6 +56,7 @@ while true
         % Save the image as a PNG file
         imwrite(img, 'captured_image.png');
         disp('Image saved as captured_image.png');
+        break;
     end
 end
 
@@ -135,6 +136,29 @@ for i = 1:size(vectors, 1)
 end
 hold off;
 
+%% % Assume 'vectors' is the output from the nearest neighbor vectorization
+% vectors = [y1, x1, y2, x2]; this is typical format after vectorization
+
+% Optionally convert this to a simple list of unique points if needed
+% This might involve reshaping the array and then using unique to filter duplicates
+points = reshape(vectors.', 2, []).';  % Reshape and transpose to get all points in rows
+unique_points = unique(points, 'rows');  % Optional: remove duplicate points
+
+% Export to CSV
+filename = 'xypoints.csv';
+writematrix(unique_points, filename);
+
+%% % Load the points from CSV
+points = readmatrix('points.csv');
+
+% Plotting the points
+figure;
+plot(points(:,1), points(:,2), 'o'); % Plot points as circles
+title('Visual Representation of Points');
+xlabel('X Coordinate');
+ylabel('Y Coordinate');
+axis equal; % Ensure equal scaling on both axes
+grid on; % Turn on the grid for easier visualization
 
 % %% Detect start and end points 
 % 
