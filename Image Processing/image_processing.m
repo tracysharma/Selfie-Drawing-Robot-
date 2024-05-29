@@ -97,11 +97,15 @@ BWseg = bwmorph(BW,'skel',Inf); %applies a specific morphological operation to t
 figure, imshow(BWseg);
 
 %% Nearest Neighbor Vectorization
-vectors = nearestNeighborVectorization(BWseg);
+% vectors = nearestNeighborVectorization(BWseg);
+bicubic_vec = BicubicVectorization(BWseg, 'bicubic');
 
 % Export vectors to CSV file
-filename = 'vectors.csv';
-writematrix(vectors, filename, 'Delimiter', ',');
+% filename = 'vectors.csv';
+% writematrix(vectors, filename, 'Delimiter', ',');
+
+filename = 'bicubic_vectors.csv';
+writematrix(bicubic_vec, filename, 'Delimiter', ',');
 
 % % Optionally, you can visualize the vectorized result
 % figure;
@@ -118,23 +122,34 @@ writematrix(vectors, filename, 'Delimiter', ',');
 
 %% Visualize Vectors from CSV
 % Read vectors from CSV
-vectors = readmatrix('vectors.csv');
+% vectors = readmatrix('vectors.csv');
+% 
+% % Create a blank figure for plotting vectors
+% figure;
+% axis equal;
+% hold on;
+% title('Vector Visualization');
+% xlabel('Column Index');
+% ylabel('Row Index');
+% for i = 1:size(vectors, 1)
+%     if vectors(i,1) == vectors(i,3)  % Horizontal line
+%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'r', 'LineWidth', 2);
+%     else  % Vertical line
+%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'b', 'LineWidth', 2);
+%     end
+% end
+% hold off;
+
+vectors = readmatrix('bicubic_vectors.csv');
 
 % Create a blank figure for plotting vectors
 figure;
+plot(vectors(:,1), vectors(:,2), 'o');
+title('Visual Representation of Bicubic Vectors');
+xlabel('X Coordinate');
+ylabel('Y Coordinate');
 axis equal;
-hold on;
-title('Vector Visualization');
-xlabel('Column Index');
-ylabel('Row Index');
-for i = 1:size(vectors, 1)
-    if vectors(i,1) == vectors(i,3)  % Horizontal line
-        plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'r', 'LineWidth', 2);
-    else  % Vertical line
-        plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'b', 'LineWidth', 2);
-    end
-end
-hold off;
+grid on;
 
 %% % Assume 'vectors' is the output from the nearest neighbor vectorization
 % vectors = [y1, x1, y2, x2]; this is typical format after vectorization
