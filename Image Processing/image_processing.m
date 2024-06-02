@@ -65,66 +65,60 @@ rosshutdown;
 %% Acquire an image from user selection
 
 
-I = imread(uigetfile('*.*', 'Select an Image'));  % Allow selection of any file type and immediately read the image   %the image need to be in the same folder as this MATLAB program
-                         %change to ALL FILES, then can then you can see images and select
+I = imread(uigetfile('*.*', 'Select an Image'));    % Allow selection of any file type and immediately read the image   
+                                                    % The image need to be in the same folder as this MATLAB program
 
-% I = imread('captured_image.png');  %alternatively use specific image 
+% I = imread('captured_image.png'); % Alternatively use specific image 
 
 
 %% Read an image file 
 
 figure; 
-imshow(I);  %show the image
+imshow(I);  % Show the image
 
 
 %% Edge detection 
 
-BW = edge(rgb2gray(I),'Canny',[0.0813 0.1281]); %0.0813,0.1281
-                                                  %returns a binary image BW containing 1s where the function finds edges 
-                                                  % in the grayscale or binary image I and 0s elsewhere.
-                                                  %returns all edges that are stronger than threshold
-                                                  %the Canny method is less likely than the other methods to be fooled by noise, and more likely to detect true weak edges.
+BW = edge(rgb2gray(I),'Canny',[0.0813 0.1281]); % Returns a binary image BW containing 1s where the function finds edges 
+                                                % in the grayscale or binary image I and 0s elsewhere.
+                                                % Returns all edges that are stronger than threshold
+                                                % The Canny method is less likely than the other methods to be fooled by noise, and more likely to detect true weak edges.
 
 figure, imshow(BW);
 %% Skeletonization/Segmentation
 
-BWseg = bwmorph(BW,'skel',Inf); %applies a specific morphological operation to the binary image BW.
-                                %Inf makes the operation repeat until the image no longer changes.
-                                %With n = Inf, remove pixels on the boundaries of objects without allowing objects to break apart. 
-                                % The pixels remaining make up the image skeleton. This option preserves the Euler number.
-                                %Morphological operations are image processing techniques that deal with the shape or structure of objects in an image. 
-                                %They work mainly with binary images, where pixels are either black (0) or white (1).
+BWseg = bwmorph(BW,'skel',Inf); % Applies a specific morphological operation to the binary image BW.
+                                % Inf makes the operation repeat until the image no longer changes.
+                                % With n = Inf, remove pixels on the boundaries of objects without allowing objects to break apart. 
+                                % The pixels remaining make up the image skeleton.
+                                % Morphological operations are image processing techniques that deal with the shape or structure of objects in an image. 
+                                % They work mainly with binary images, where pixels are either black (0) or white (1).
 figure, imshow(BWseg);
 
-%% Nearest Neighbor Vectorization
+%% Vectorization
+
+% Nerest Neighbour Vectorisation
+
 % vectors = nearestNeighborVectorization(BWseg);
-bicubic_vec = BicubicVectorization(BWseg, 'bicubic');
 
 % Export vectors to CSV file
 % filename = 'vectors.csv';
 % writematrix(vectors, filename, 'Delimiter', ',');
 
+% Bicubic Vectorisation
+
+bicubic_vec = BicubicVectorization(BWseg, 'bicubic');
+
 filename = 'bicubic_vectors.csv';
 writematrix(bicubic_vec, filename, 'Delimiter', ',');
 
-% % Optionally, you can visualize the vectorized result
-% figure;
-% imshow(I);  % Show original image
-% hold on;
-% for i = 1:size(vectors, 1)
-%     if vectors(i,1) == vectors(i,3)  % Horizontal line
-%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'r', 'LineWidth', 2);
-%     else  % Vertical line
-%         plot([vectors(i,2), vectors(i,4)], [vectors(i,1), vectors(i,3)], 'b', 'LineWidth', 2);
-%     end
-% end
-% hold off;
+%% Visualize Image from CSV
+% Nearest Neigbour Vectorisation
 
-%% Visualize Vectors from CSV
 % Read vectors from CSV
 % vectors = readmatrix('vectors.csv');
 % 
-% % Create a blank figure for plotting vectors
+% % Plot
 % figure;
 % axis equal;
 % hold on;
@@ -140,9 +134,12 @@ writematrix(bicubic_vec, filename, 'Delimiter', ',');
 % end
 % hold off;
 
+% Bicubic Vectorisation
+
+% Read in CSV file
 vectors = readmatrix('bicubic_vectors.csv');
 
-% Create a blank figure for plotting vectors
+% Plot
 figure;
 plot(vectors(:,1), vectors(:,2), 'o');
 title('Visual Representation of Bicubic Vectors');
@@ -151,10 +148,11 @@ ylabel('Y Coordinate');
 axis equal;
 grid on;
 
-%% % Assume 'vectors' is the output from the nearest neighbor vectorization
+%% Extract x and y points (if using nearest neighbour)
+% Assume 'vectors' is the output from the nearest neighbor vectorization
 % vectors = [y1, x1, y2, x2]; this is typical format after vectorization
 
-% Optionally convert this to a simple list of unique points if needed
+% Convert this to a simple list of unique points
 % This might involve reshaping the array and then using unique to filter duplicates
 points = reshape(vectors.', 2, []).';  % Reshape and transpose to get all points in rows
 unique_points = unique(points, 'rows');  % Optional: remove duplicate points
@@ -163,7 +161,7 @@ unique_points = unique(points, 'rows');  % Optional: remove duplicate points
 filename = 'xypoints_after_vect.csv';
 writematrix(unique_points, filename);
 
-%% % Load the points from CSV
+%% Visualise Image from CSV (if using nearest neighbour)
 points = readmatrix('xypoints_after_vect.csv');
 
 % Plotting the points
@@ -175,7 +173,7 @@ ylabel('Y Coordinate');
 axis equal; % Ensure equal scaling on both axes
 grid on; % Turn on the grid for easier visualization
 
-%% Uniform Downsampling
+%% Uniform Downsampling Example
 % Load the original points
 points = readmatrix('xypoints_after_vect.csv');
 
