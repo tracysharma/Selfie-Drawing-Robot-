@@ -8,24 +8,6 @@
 clear all; 
 close all; 
 clc; 
-rng('default');
-
-ScaleValue = 300;  %scale value for x and y, default scale of 1 have    x and y value around 0.3
-LiftPenHeight = 10;  %set value for z which is the hight we lift pen (in mm)
-
-DistanceWhichLiftPen = 0.002 * ScaleValue;   %suggested ti not change this value (if want changed, change only 0.002)
-                                         %if two points are further than this distance then we will lift pen (give z value) to the end and start point
-
-origin = [144 134]; % origion of the graph, write as [x y]; set the origin (by having the robot arm going to the center of the paper and then writing down the x and y value) 
-delta = 0.001; % the distance apart we want record (the smaller the more detailed drawing is)
-
-boundary = 18;    %we can change to a different value but this works fine
-
-ZOffset = 113.215;  %we can enter the offset value for z here, if enter -100 then all z value will be 100 less
-
-% Yaw = -176.629;  %W value, for robot arm to hold the pen
-% Roll = -2.447;   %P value 
-% Pitch = 112.57;  %R value
 
 %% Read in ROS image and save in folder
 % Create a ROS master node
