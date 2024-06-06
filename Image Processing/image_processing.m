@@ -1,10 +1,7 @@
 %% Image Processing
-
-%Enter the origin (by going to the centre of the paper then write down x and y value, ScaleValue and LiftPenHeight, 
-%Select a file, change file type to ALL FILES and select image located within same folder
-%Output will go to test.csv
-
-%% Initialization 
+% This code takes an image (preferably of a face) and performs bicubic
+% vectorisation on it.
+% Output is a csv file with x and y coordinates of the image features.
 clear all; 
 close all; 
 clc; 
@@ -89,10 +86,10 @@ figure, imshow(BWseg);
 
 % Bicubic Vectorisation
 
-bicubic_vec = BicubicVectorization(BWseg, 'bicubic');
+bicubic_vec = BicubicVectorization(BWseg, 'bicubic'); % Perform bicubic vectorisation
 
 filename = 'bicubic_vectors.csv';
-writematrix(bicubic_vec, filename, 'Delimiter', ',');
+writematrix(bicubic_vec, filename, 'Delimiter', ','); % Saves output as csv file
 
 %% Visualize Image from CSV
 % Nearest Neigbour Vectorisation
@@ -123,7 +120,7 @@ vectors = readmatrix('bicubic_vectors.csv');
 
 % Plot
 figure;
-plot(vectors(:,1), vectors(:,2), 'o');
+plot(vectors(:,1), vectors(:,2), 'o'); % Plot points from csv file to double check
 title('Visual Representation of Bicubic Vectors');
 xlabel('X Coordinate');
 ylabel('Y Coordinate');
