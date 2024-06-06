@@ -60,7 +60,7 @@ imshow(I);  % Show the image
 
 BW = edge(rgb2gray(I),'Canny',[0.0813 0.1281]); % Returns a binary image BW containing 1s where the function finds edges 
                                                 % in the grayscale or binary image I and 0s elsewhere.
-                                                % Returns all edges that are stronger/weaker than low and high thresholds.
+                                                % Returns all edges that are stronger/weaker than low/high thresholds.
                                                 % The Canny method is less likely than the other methods to be fooled by noise, and more likely to detect true weak edges.
 
 figure, imshow(BW);
